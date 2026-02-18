@@ -10,8 +10,11 @@ module alchitry_top (
     input io_button[5],     // 5 buttons on IO Shield
     input io_dip[3][8]      // DIP switches on IO Shield
 ) {
-    
+
     sig rst                 // reset signal
+    const SIZE = 4
+    // fa fa
+    rca rca(#SIZE(SIZE))
     
     .clk(clk) {
         // The reset conditioner is used to synchronize the reset signal to the FPGA
@@ -19,27 +22,30 @@ module alchitry_top (
         reset_conditioner reset_cond
     }
     
-    
-    // Onboard 7segment: Common Cathode
-    seven_segment_encoder enc
-    
     always {
         reset_cond.in = ~rst_n  // input raw inverted reset signal
         rst = reset_cond.out    // conditioned reset
         
-        enc.char = 4h4
-        // We are common-cathode, so we should invert the segments requested
-        io_segment = ~enc.segs
-        // CC, so this actually sets up only the leftmost segment to turn on
-        io_select = ~4d0001
-        
-        // led = 8h00              // turn LEDs off
-        // Higher priority -> lower down
-        led = 8d12
-        led[5] = io_dip[0][0] & io_dip[0][1]
+        led = 8h00              // turn LEDs off
         
         usb_tx = usb_rx         // loop serial port
         
         io_led = 3x{{8h00}}
+        io_segment = 8hff
+        io_select = 4hf
+        
+        // Connect input switches to the full adder
+        /*
+        fa.a = io_dip[0][0]
+        fa.b = io_dip[0][1]
+        fa.cin = io_dip[0][2]
+        io_led[0][0] = fa.s
+        io_led[0][1] = fa.cout
+        */
+        rca.a = io_dip[0][SIZE-1:0]
+        rca.b = io_dip[1][SIZE-1:0]
+        rca.cin = 0
+        io_led[0][SIZE-1:0] = rca.s
+        io_led[1][0] = rca.cout
     }
 }

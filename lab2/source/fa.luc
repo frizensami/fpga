@@ -1,0 +1,15 @@
+// One bit full adder
+// Adds a, b, and carry in (cin)
+module fa (
+    input a,
+    input b, 
+    input cin,
+    output s,
+    output cout
+) {
+    // What boolean operators would give us a + b + cin for s and carry?
+    always {
+        s = a ^ b ^ cin // XORing them together is like adding w/o carry
+        cout = (a & b) | (b & cin) | (a & cin) // If any two of the three are 1, there is a carry
+    }
+}

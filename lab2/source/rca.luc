@@ -1,0 +1,36 @@
+/*
+Ripple-carry adder (RCA) with configurable size (number of bits)
+*/
+module rca #(
+    SIZE = 32 : SIZE > 1
+)(
+    input a[SIZE],
+    input b[SIZE],
+    input cin,
+    output s[SIZE],
+    output cout
+) {
+    // to add 2 SIZE-bit numbers together, we need SIZE full adders
+    fa fa[SIZE]
+    
+    always {
+        s = 0
+        cout = 0
+         
+        // Pass the a and b values directly to the fa inputs
+        fa.a = a
+        fa.b = b
+        
+        // The first full adder gets the cin 
+        fa.cin[0] = cin
+        
+        // Everyone else gets the output of the previous fa
+        repeat(i, SIZE - 1, 0, 1) {
+            fa.cin[i+1] = fa.cout[i]
+        }
+        
+        // Finally, assign the outputs
+        s = fa.s
+        cout = fa.cout[SIZE-1]
+    }
+}
