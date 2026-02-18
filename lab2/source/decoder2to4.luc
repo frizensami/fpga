@@ -1,0 +1,17 @@
+module decoder2to4 (
+    input v,
+    input a0,
+    input a1,
+    output y0,
+    output y1, 
+    output y2,
+    output y3
+) {
+    // im lazy
+    always {
+        y0 = 0
+        y1 = 0
+        y2 = 0
+        y3 = 0
+    }
+}

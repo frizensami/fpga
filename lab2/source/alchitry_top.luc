@@ -15,7 +15,9 @@ module alchitry_top (
     const SIZE = 4
     // fa fa
     // rca rca(#SIZE(SIZE))
-    mux2to1 mux2
+    // mux2to1 mux2
+    // mux4to1 mux4
+    decoder1to2 dec1
     
     .clk(clk) {
         // The reset conditioner is used to synchronize the reset signal to the FPGA
@@ -52,9 +54,27 @@ module alchitry_top (
         io_led[1][0] = rca.cout
         */
         // 2-1 Mux
+        /*
         mux2.data0 = io_dip[0][0]
         mux2.data1 = io_dip[0][1]
         mux2.s = io_dip[0][2]
         io_led[0][0] = mux2.y
+        */
+        
+        // 4-1 Mux
+        /*
+        mux4.data0 = io_dip[0][0]
+        mux4.data1 = io_dip[0][1]
+        mux4.data2 = io_dip[0][2]
+        mux4.data3 = io_dip[0][3]
+        mux4.s0 = io_dip[1][0]
+        mux4.s1 = io_dip[1][1]
+        io_led[0][0] = mux4.y
+        */
+        // 2-1 decoder 
+        dec1.v = io_dip[0][0]
+        dec1.a = io_dip[0][1]
+        io_led[0][0] = dec1.y0
+        io_led[0][1] = dec1.y1
     }
 }

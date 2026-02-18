@@ -1,0 +1,37 @@
+/*
+S1S0 = 00 selects D0
+S1S0 = 01 selects D1
+S1S0 = 10 selects D2
+S1S0 = 11 selects D3
+*/
+module mux4to1 (
+    input data0, 
+    input data1, 
+    input data2, 
+    input data3,
+    input s0, 
+    input s1,
+    output y
+) {
+    mux2to1 d0d1
+    mux2to1 d2d3
+    mux2to1 final
+    
+    always {
+        // Set up the inputs to the first stage muxes
+        d0d1.data0 = data0
+        d0d1.data1 = data1
+        d2d3.data0 = data2
+        d2d3.data1 = data3   
+        // Set up the first stage selectors
+        d0d1.s = s0
+        d2d3.s = s0
+        // Set up the outputs of these into the second stage mux
+        final.data0 = d0d1.y
+        final.data1 = d2d3.y
+        // Set up the final stage selectors
+        final.s = s1
+        // Output from final mux
+        y = final.y        
+    }
+}

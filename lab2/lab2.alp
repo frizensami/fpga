@@ -34,6 +34,24 @@
                     "type": "DiskFile",
                     "path": "source/mux2to1.luc"
                 }
+            },
+            {
+                "file": {
+                    "type": "DiskFile",
+                    "path": "source/mux4to1.luc"
+                }
+            },
+            {
+                "file": {
+                    "type": "DiskFile",
+                    "path": "source/decoder1to2.luc"
+                }
+            },
+            {
+                "file": {
+                    "type": "DiskFile",
+                    "path": "source/decoder2to4.luc"
+                }
             }
         ],
         "constraintFiles": [
