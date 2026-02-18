@@ -14,7 +14,8 @@ module alchitry_top (
     sig rst                 // reset signal
     const SIZE = 4
     // fa fa
-    rca rca(#SIZE(SIZE))
+    // rca rca(#SIZE(SIZE))
+    mux2to1 mux2
     
     .clk(clk) {
         // The reset conditioner is used to synchronize the reset signal to the FPGA
@@ -34,7 +35,7 @@ module alchitry_top (
         io_segment = 8hff
         io_select = 4hf
         
-        // Connect input switches to the full adder
+        // Full adder
         /*
         fa.a = io_dip[0][0]
         fa.b = io_dip[0][1]
@@ -42,10 +43,18 @@ module alchitry_top (
         io_led[0][0] = fa.s
         io_led[0][1] = fa.cout
         */
+        // Ripple carry
+        /*
         rca.a = io_dip[0][SIZE-1:0]
         rca.b = io_dip[1][SIZE-1:0]
         rca.cin = 0
         io_led[0][SIZE-1:0] = rca.s
         io_led[1][0] = rca.cout
+        */
+        // 2-1 Mux
+        mux2.data0 = io_dip[0][0]
+        mux2.data1 = io_dip[0][1]
+        mux2.s = io_dip[0][2]
+        io_led[0][0] = mux2.y
     }
 }
